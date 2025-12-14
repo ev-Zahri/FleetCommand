@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 
 // Dynamically import the map to avoid SSR issues with Leaflet
 const LiveTrackingMap = dynamic(
-    () => import('../components/LiveTrackingMap'),
+    () => import('@/components/LiveTrackingMap'),
     { 
         ssr: false,
         loading: () => (

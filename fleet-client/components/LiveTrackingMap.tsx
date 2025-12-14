@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
-import { useWebSocket } from '../lib/websocket';
+import { useWebSocket } from '@/lib/websocket';
 
 // Dynamically import map components to avoid SSR issues
 const MapContainer = dynamic(

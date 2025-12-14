@@ -3,7 +3,7 @@
 import { useEffect, useRef } from 'react';
 import L from 'leaflet';
 import { Marker, Popup, useMap } from 'react-leaflet';
-import type { DriverLocation } from '../lib/websocket';
+import type { DriverLocation } from '@/lib/websocket';
 
 interface DriverMarkerProps {
     driver: DriverLocation;
