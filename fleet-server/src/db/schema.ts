@@ -12,14 +12,14 @@ export const usersTable = pgTable("users", {
     deletedAt: timestamp("deleted_at"),
 });
 
-const statusDriverEnum = pgEnum("status", ["idle", "busy", "offline"]);
+const statusDriverEnum = pgEnum("driver_status", ["idle", "busy", "offline"]);
 
 export const driversTable = pgTable("drivers", {
     id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
     userId: integer("user_id").notNull().references(() => usersTable.id),
     name: varchar("name").notNull(),
     phoneNumber: varchar("phone_number").notNull(),
-    status: statusDriverEnum("status").notNull(),
+    status: statusDriverEnum("driver_status").notNull(),
     lastLocation: geometry("last_location").notNull(),
     vehicleDetail: varchar("vehicle_detail").notNull(),
     createdAt: timestamp("created_at").notNull().defaultNow(),
@@ -27,7 +27,7 @@ export const driversTable = pgTable("drivers", {
     deletedAt: timestamp("deleted_at"),
 });
 
-const statusOrderEnum = pgEnum("status", ["pending", "assigned", "picked_up", "delivered", "cancelled"]);
+const statusOrderEnum = pgEnum("order_status", ["pending", "assigned", "picked_up", "delivered", "cancelled"]);
 
 export const ordersTable = pgTable("orders", {
     id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
@@ -38,7 +38,7 @@ export const ordersTable = pgTable("orders", {
     dropOffPoint: geometry("drop_off_point").notNull(),
     pickUpAddress: varchar("pick_up_address").notNull(),
     dropOffAddress: varchar("drop_off_address").notNull(),
-    status: statusOrderEnum("status").notNull(),
+    status: statusOrderEnum("order_status").notNull(),
     price: decimal("price", { precision: 10, scale: 2 }).notNull(),
     createdAt: timestamp("created_at").notNull().defaultNow(),
     updatedAt: timestamp("updated_at").notNull().defaultNow(),
