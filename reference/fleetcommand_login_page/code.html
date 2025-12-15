@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FleetCommand Login</title>
+<link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&amp;family=Noto+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2bee79",
+                        "background-light": "#f6f8f7",
+                        "background-dark": "#102217",
+                        "surface-dark": "#193324",
+                        "border-dark": "#326747",
+                        "text-muted-dark": "#92c9a8",
+                    },
+                    fontFamily: {
+                        "display": ["Spline Sans", "sans-serif"],
+                        "body": ["Noto Sans", "sans-serif"],
+                    },
+                    borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white h-screen overflow-hidden flex flex-col md:flex-row antialiased selection:bg-primary selection:text-background-dark">
+<!-- Left Section: Login Form -->
+<div class="w-full md:w-1/2 lg:w-[45%] h-full flex flex-col justify-center px-6 sm:px-12 xl:px-24 overflow-y-auto relative z-10 bg-background-light dark:bg-background-dark">
+<div class="max-w-[480px] w-full mx-auto">
+<!-- Logo -->
+<div class="flex items-center gap-3 mb-10 group cursor-pointer">
+<div class="w-10 h-10 rounded bg-primary/10 border border-primary/20 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-background-dark transition-colors duration-300">
+<span class="material-symbols-outlined text-2xl">local_shipping</span>
+</div>
+<span class="text-xl font-bold tracking-tight dark:text-white">FleetCommand</span>
+</div>
+<!-- Heading -->
+<div class="mb-8">
+<h1 class="text-4xl font-black leading-tight tracking-[-0.033em] mb-3 dark:text-white">Welcome back</h1>
+<p class="text-slate-500 dark:text-text-muted-dark text-base leading-normal">Enter your credentials to access the FleetCommand dashboard.</p>
+</div>
+<!-- Form -->
+<form action="#" class="flex flex-col gap-5">
+<!-- Email Input -->
+<div class="flex flex-col gap-2">
+<label class="text-base font-medium leading-normal dark:text-white" for="email">Email</label>
+<div class="relative group/input">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-text-muted-dark transition-colors group-focus-within/input:text-primary">mail</span>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded text-slate-900 dark:text-white focus:outline-0 focus:ring-0 border border-slate-200 dark:border-border-dark bg-white dark:bg-surface-dark focus:border-primary dark:focus:border-primary h-14 pl-12 pr-4 placeholder:text-slate-400 dark:placeholder:text-text-muted-dark text-base font-normal leading-normal transition-all shadow-sm" id="email" placeholder="name@company.com" type="email" value=""/>
+</div>
+</div>
+<!-- Password Input -->
+<div class="flex flex-col gap-2">
+<div class="flex justify-between items-center">
+<label class="text-base font-medium leading-normal dark:text-white" for="password">Password</label>
+<a class="text-sm font-medium text-primary hover:text-primary/80 transition-colors" href="#">Forgot Password?</a>
+</div>
+<div class="relative group/input">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-text-muted-dark transition-colors group-focus-within/input:text-primary">lock</span>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded text-slate-900 dark:text-white focus:outline-0 focus:ring-0 border border-slate-200 dark:border-border-dark bg-white dark:bg-surface-dark focus:border-primary dark:focus:border-primary h-14 pl-12 pr-4 placeholder:text-slate-400 dark:placeholder:text-text-muted-dark text-base font-normal leading-normal transition-all shadow-sm" id="password" placeholder="••••••••" type="password" value=""/>
+</div>
+</div>
+<!-- Remember Me Toggle -->
+<div class="flex items-center pt-1">
+<label class="relative inline-flex items-center cursor-pointer group">
+<input class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary/50 rounded-full peer dark:bg-surface-dark border dark:border-border-dark peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary peer-checked:border-primary"></div>
+<span class="ml-3 text-base font-normal text-slate-600 dark:text-white group-hover:text-slate-900 dark:group-hover:text-primary transition-colors">Remember for 30 days</span>
+</label>
+</div>
+<!-- Submit Button -->
+<button class="mt-2 w-full h-14 rounded bg-primary hover:bg-[#25d36b] focus:ring-4 focus:ring-primary/30 text-background-dark font-bold text-lg transition-all flex items-center justify-center gap-2 shadow-[0_0_20px_-5px_rgba(43,238,121,0.4)]" type="button">
+<span>Sign In</span>
+<span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</form>
+<!-- Divider -->
+<div class="relative my-8">
+<div class="absolute inset-0 flex items-center">
+<div class="w-full border-t border-slate-200 dark:border-border-dark"></div>
+</div>
+<div class="relative flex justify-center text-sm">
+<span class="px-4 bg-background-light dark:bg-background-dark text-slate-500 dark:text-text-muted-dark font-medium">Or continue with</span>
+</div>
+</div>
+<!-- Social Login -->
+<div class="grid grid-cols-2 gap-4">
+<button class="h-12 rounded border border-slate-200 dark:border-border-dark bg-white dark:bg-surface-dark hover:bg-slate-50 dark:hover:bg-[#1f3f2d] hover:border-slate-300 dark:hover:border-primary/50 flex items-center justify-center gap-2 transition-all group">
+<img alt="Google" class="w-5 h-5" data-alt="Google G Logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAOAnNK6G2afKPIs6OfMdvkba37P1QBqxrwDQSg1Zm1XUZEc3LAuJcM0lYgm9tqdKxSV6a5s2K_AETQ3U-PHM5BVTpk1BmXDoSHjIQzNCXybJQUCpakiSudOGszd7mBOkJ9Xwj8OKcE9uIh78Xr73z8uwuf5akhlGF_s6pa4AlRDZNdgNHXWDUqMao37BNoWKj9SZ7oQY53-DM-6udE6okbqUEamXlKn5gofHDFjvgJT3dYT5ds8XNMtrxB-efDrztXwbr6soBxGxA"/>
+<span class="text-sm font-semibold text-slate-700 dark:text-white group-hover:text-slate-900 dark:group-hover:text-primary transition-colors">Google</span>
+</button>
+<button class="h-12 rounded border border-slate-200 dark:border-border-dark bg-white dark:bg-surface-dark hover:bg-slate-50 dark:hover:bg-[#1f3f2d] hover:border-slate-300 dark:hover:border-primary/50 flex items-center justify-center gap-2 transition-all group">
+<span class="material-symbols-outlined text-slate-700 dark:text-white group-hover:text-slate-900 dark:group-hover:text-primary transition-colors text-xl">encrypted</span>
+<span class="text-sm font-semibold text-slate-700 dark:text-white group-hover:text-slate-900 dark:group-hover:text-primary transition-colors">SSO</span>
+</button>
+</div>
+<p class="mt-8 text-center text-sm text-slate-500 dark:text-text-muted-dark">
+                Don't have an account? <a class="font-semibold text-primary hover:underline" href="#">Request access</a>
+</p>
+</div>
+</div>
+<!-- Right Section: Visual -->
+<div class="hidden md:flex w-1/2 lg:w-[55%] relative overflow-hidden bg-[#0c1a12]">
+<!-- Background Image -->
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-[20s] hover:scale-105" data-alt="Abstract digital map of the world with glowing network connections representing global logistics tracking" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDRBnhB2d3NjLTSCUVFXdhxy_Ng-U9iqFhLt5_6j70dWgPaYDQjldhdfohWJ0xE4NddxfJ4At6vFLVc1DWFl_7ZpKah9b2PRWcjJFSYMk87pllR4Pi-60C7_42v1seB8hi_apN7kwKvtpL5O6HXnM7f1-0iScyT25eZXlNYe7AxfXW1CSOMR1RjB6U9vhyokXJtiKG-h4cTzBr4VepjKACbaHExMu9im2JJB8xsRpIF_r6yCFdGIU7ANVRc4ld-bkymX2wmStPH10I'); opacity: 0.5;"></div>
+<!-- Gradient Overlay -->
+<div class="absolute inset-0 bg-gradient-to-t from-background-dark via-transparent to-transparent opacity-90"></div>
+<div class="absolute inset-0 bg-gradient-to-r from-background-dark via-transparent to-transparent opacity-80"></div>
+<!-- Grid Pattern Overlay -->
+<div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(#2bee79 1px, transparent 1px); background-size: 32px 32px;"></div>
+<!-- Floating Content -->
+<div class="absolute bottom-12 left-12 right-12 z-10">
+<!-- Glass Card -->
+<div class="bg-surface-dark/40 backdrop-blur-xl border border-border-dark/50 p-6 rounded-lg max-w-[500px] shadow-2xl relative overflow-hidden">
+<!-- Glowing corner accent -->
+<div class="absolute -top-10 -right-10 w-20 h-20 bg-primary/20 blur-xl rounded-full"></div>
+<div class="flex items-start gap-5 relative z-10">
+<div class="w-14 h-14 rounded-lg bg-gradient-to-br from-primary to-[#1fa855] flex items-center justify-center text-[#102217] shrink-0 shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-3xl">hub</span>
+</div>
+<div>
+<div class="flex items-center gap-3 mb-2">
+<h3 class="text-white font-bold text-lg tracking-tight">Fleet Intelligence</h3>
+<span class="flex h-2 w-2 relative">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+</span>
+</div>
+<p class="text-text-muted-dark text-sm leading-relaxed mb-4">
+                            Real-time telemetry and predictive maintenance for modern logistics.
+                        </p>
+<!-- Mini Stats Grid -->
+<div class="grid grid-cols-2 gap-4 pt-4 border-t border-white/10">
+<div>
+<p class="text-[10px] tracking-wider text-text-muted-dark uppercase font-bold mb-1">Active Fleet</p>
+<p class="text-white font-mono font-bold text-xl">12,405</p>
+</div>
+<div>
+<p class="text-[10px] tracking-wider text-text-muted-dark uppercase font-bold mb-1">System Status</p>
+<p class="text-primary font-bold text-sm flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-sm">check_circle</span>
+                                    Operational
+                                </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body></html>

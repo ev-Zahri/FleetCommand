@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FleetCommand Dashboard</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "primary-hover": "#1d6bf5",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#0f172a", /* Slate 950 */
+                        "surface-dark": "#1e293b", /* Slate 800 */
+                        "surface-darker": "#111827", /* Gray 900 */
+                        "border-color": "#334155", /* Slate 700 */
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for webkit browsers */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155; 
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569; 
+        }
+        
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+    </style>
+</head>
+<body class="bg-background-dark text-slate-200 font-display overflow-hidden">
+<div class="flex h-screen w-full">
+<!-- Sidebar Navigation -->
+<aside class="w-20 lg:w-64 flex-shrink-0 flex flex-col border-r border-border-color bg-[#0b1121] transition-all duration-300 z-20">
+<div class="h-16 flex items-center gap-3 px-4 lg:px-6 border-b border-border-color/50">
+<div class="size-8 rounded-lg bg-primary flex items-center justify-center flex-shrink-0 shadow-[0_0_15px_rgba(19,91,236,0.5)]">
+<span class="material-symbols-outlined text-white text-[20px]">local_shipping</span>
+</div>
+<h1 class="text-white text-lg font-bold tracking-tight hidden lg:block">FleetCommand</h1>
+</div>
+<nav class="flex-1 flex flex-col gap-2 p-3 overflow-y-auto">
+<!-- Nav Item: Active -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 border border-primary/20 text-white group transition-colors" href="#">
+<span class="material-symbols-outlined text-primary group-hover:text-primary-hover">dashboard</span>
+<span class="text-sm font-medium hidden lg:block">Dashboard</span>
+</a>
+<!-- Nav Item -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-colors" href="#">
+<span class="material-symbols-outlined">package_2</span>
+<span class="text-sm font-medium hidden lg:block">Orders</span>
+</a>
+<!-- Nav Item -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-colors" href="#">
+<span class="material-symbols-outlined">badge</span>
+<span class="text-sm font-medium hidden lg:block">Drivers</span>
+</a>
+<!-- Nav Item -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-colors" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="text-sm font-medium hidden lg:block">Analytics</span>
+</a>
+<!-- Nav Item -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-colors" href="#">
+<span class="material-symbols-outlined">map</span>
+<span class="text-sm font-medium hidden lg:block">Live Map</span>
+</a>
+</nav>
+<div class="p-3 border-t border-border-color/50">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-sm font-medium hidden lg:block">Settings</span>
+</a>
+<div class="mt-2 flex items-center gap-3 px-3 py-2">
+<div class="size-8 rounded-full bg-slate-700 bg-cover bg-center" data-alt="User avatar" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAQj5HKGvbeAirIyWQeCyp0Tj7n6GqG2aHm-rCx12OdzeKIqMlq2QKmJHtl0A47Tzkz0Gr6Td_9ipNJSNZRruKXqeu1Vf1mruJ2WQToWYWWeC208oTqOW7J36rKcH0u93ywTiKrZUfshtow1gGFcpMS_O4w9PdSSBg8e66oAcEEHVSSOeK3AhkOQAB0IQZbvnTQmL7oyGUCKh7VHxDXtgftGUm9TXGkCpDdBjsajhNqpMcpKZE75vjpf-6K3skWo8prLQmgj8cfL8Q');"></div>
+<div class="hidden lg:flex flex-col">
+<span class="text-sm font-medium text-white">Tom Cook</span>
+<span class="text-xs text-slate-500">Fleet Manager</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 relative flex flex-col h-full overflow-hidden bg-background-dark">
+<!-- Map Background Layer -->
+<div class="absolute inset-0 z-0 bg-surface-darker">
+<!-- Placeholder for Map -->
+<div class="w-full h-full bg-cover bg-center opacity-60 grayscale-[20%]" data-alt="Dark aerial map view of a city grid at night" data-location="San Francisco" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDbdhlEs0v_Zg-eK8q8H8zcUDAzeLurWpUZlvd5SoyAQqE7xeMx6CrM9W2aRS9csTLfFpaZCKuSKcg3CaJq2uQ3YQpoQ0r9N6rQe8L1ZCKG14Y_cnFxKlQOiN9FAMHXKetUuRlidUg7UDArLHrSspF9rf3JlRtZgEVKrPw8YLrcxr0eaSeo6ntPFgTVT4XJl6X4Q-hTo1Jc1q7nEFlQglYSgvLiZe1xhhUoub3yAoIvMwnfSG1vpxhVpZvWIau2nOXSaBrhQUlZTX4');">
+</div>
+<!-- Map Overlay Gradient for readability -->
+<div class="absolute inset-0 bg-gradient-to-t from-background-dark/80 via-transparent to-background-dark/40 pointer-events-none"></div>
+</div>
+<!-- Dashboard Overlay Content -->
+<div class="relative z-10 flex flex-col h-full pointer-events-none">
+<!-- Top Bar: Search & KPIs -->
+<div class="p-4 lg:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 w-full pointer-events-auto">
+<!-- Search Bar (Top Center/Left) -->
+<div class="lg:col-span-4 flex items-start">
+<div class="glass-panel w-full rounded-xl flex items-center px-4 py-3 shadow-lg">
+<span class="material-symbols-outlined text-slate-400 mr-3">search</span>
+<input class="bg-transparent border-none text-white placeholder-slate-400 focus:ring-0 w-full text-sm h-full p-0" placeholder="Search vehicles, orders, or locations..." type="text"/>
+<div class="hidden sm:flex gap-1 ml-2">
+<span class="text-[10px] font-mono bg-slate-700/50 text-slate-400 px-1.5 py-0.5 rounded border border-slate-600">⌘</span>
+<span class="text-[10px] font-mono bg-slate-700/50 text-slate-400 px-1.5 py-0.5 rounded border border-slate-600">K</span>
+</div>
+</div>
+</div>
+<!-- KPI Cards (Floating Horizontal) -->
+<div class="lg:col-span-8 flex flex-wrap lg:justify-end gap-4">
+<!-- KPI 1 -->
+<div class="glass-panel rounded-xl p-4 min-w-[180px] flex flex-col shadow-lg transition-transform hover:-translate-y-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-slate-400 text-xs font-medium uppercase tracking-wider">Active Drivers</span>
+<span class="material-symbols-outlined text-primary text-lg">local_shipping</span>
+</div>
+<div class="flex items-end gap-2">
+<span class="text-2xl font-bold text-white leading-none">42</span>
+<div class="flex items-center text-emerald-400 text-xs font-medium bg-emerald-400/10 px-1.5 py-0.5 rounded">
+<span class="material-symbols-outlined text-[14px]">trending_up</span>
+<span>12%</span>
+</div>
+</div>
+</div>
+<!-- KPI 2 -->
+<div class="glass-panel rounded-xl p-4 min-w-[180px] flex flex-col shadow-lg transition-transform hover:-translate-y-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-slate-400 text-xs font-medium uppercase tracking-wider">Pending Orders</span>
+<span class="material-symbols-outlined text-amber-500 text-lg">pending_actions</span>
+</div>
+<div class="flex items-end gap-2">
+<span class="text-2xl font-bold text-white leading-none">8</span>
+<div class="flex items-center text-amber-400 text-xs font-medium bg-amber-400/10 px-1.5 py-0.5 rounded">
+<span>Requires Action</span>
+</div>
+</div>
+</div>
+<!-- KPI 3 -->
+<div class="glass-panel rounded-xl p-4 min-w-[180px] flex flex-col shadow-lg transition-transform hover:-translate-y-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-slate-400 text-xs font-medium uppercase tracking-wider">On-Time Rate</span>
+<span class="material-symbols-outlined text-indigo-400 text-lg">schedule</span>
+</div>
+<div class="flex items-end gap-2">
+<span class="text-2xl font-bold text-white leading-none">98.5%</span>
+<div class="flex items-center text-rose-400 text-xs font-medium bg-rose-400/10 px-1.5 py-0.5 rounded">
+<span class="material-symbols-outlined text-[14px]">trending_down</span>
+<span>0.5%</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Middle Area: Zoom Controls & Right Panel -->
+<div class="flex-1 flex px-4 lg:px-6 pb-6 overflow-hidden">
+<!-- Empty Spacer for Map Interaction Area -->
+<div class="flex-1 relative">
+<!-- Floating Zoom Controls -->
+<div class="absolute bottom-0 right-4 lg:right-auto lg:left-0 flex flex-col gap-2 pointer-events-auto">
+<button class="glass-panel size-10 flex items-center justify-center rounded-lg text-white hover:bg-slate-800 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">add</span>
+</button>
+<button class="glass-panel size-10 flex items-center justify-center rounded-lg text-white hover:bg-slate-800 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">remove</span>
+</button>
+<button class="glass-panel size-10 flex items-center justify-center rounded-lg text-white hover:bg-slate-800 hover:text-primary mt-2 transition-colors">
+<span class="material-symbols-outlined">near_me</span>
+</button>
+</div>
+<!-- Selected Vehicle Popover Simulation (Floating) -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 glass-panel p-4 rounded-xl border-l-4 border-l-primary shadow-2xl min-w-[280px] hidden lg:block animate-fade-in pointer-events-auto">
+<div class="flex justify-between items-start mb-3">
+<div>
+<h3 class="text-white font-semibold">Vehicle #402</h3>
+<p class="text-xs text-slate-400">En Route • 45 mph</p>
+</div>
+<span class="material-symbols-outlined text-emerald-400 text-sm bg-emerald-500/10 p-1 rounded-full">circle</span>
+</div>
+<div class="space-y-2">
+<div class="w-full bg-slate-700/50 rounded-full h-1.5">
+<div class="bg-primary h-1.5 rounded-full" style="width: 70%"></div>
+</div>
+<div class="flex justify-between text-xs text-slate-400">
+<span>Route Progress</span>
+<span class="text-white">70%</span>
+</div>
+<div class="pt-2 flex gap-2">
+<button class="flex-1 bg-primary hover:bg-primary-hover text-white text-xs py-2 rounded-lg font-medium transition-colors">Message</button>
+<button class="flex-1 bg-slate-700 hover:bg-slate-600 text-white text-xs py-2 rounded-lg font-medium transition-colors">Details</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Side Panel: Active Drivers -->
+<div class="w-full max-w-[320px] glass-panel rounded-2xl flex flex-col pointer-events-auto shadow-2xl ml-4 h-full border border-slate-700/50">
+<div class="p-4 border-b border-white/5 flex items-center justify-between">
+<h2 class="text-white font-semibold">Active Drivers</h2>
+<button class="text-slate-400 hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[20px]">filter_list</span>
+</button>
+</div>
+<div class="flex-1 overflow-y-auto p-2 space-y-1">
+<!-- Driver Item 1 -->
+<div class="p-3 rounded-xl hover:bg-white/5 cursor-pointer transition-colors group border border-transparent hover:border-white/5">
+<div class="flex items-center gap-3">
+<div class="relative">
+<div class="size-10 rounded-full bg-cover bg-center" data-alt="Driver Alex M" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDGmDH3yJ6-sWMOp8jtYjH4hHJlD5oK8iJw7U8RSYsBWo_SS3_E1MsDJDwM6cWT6_OtxtZIK2IWPKcAAGHIYze4iu8CqqRd-FfbXBqX794QQvLY6AzL1uaIgehqE5rmVmNWgqjTHzu97Q0Qro9gfHLrAz39orrwhDwVT-teq-3K6HJ2xy8BD_WRzTIxCZ7mwUOxAg7c--Epsn2c0chbfqZfDgQ3Aq327ps432LIx1B4FzUoYDnEj70JLtliWKNOgavN9NG8Ndxt6eM');"></div>
+<span class="absolute bottom-0 right-0 size-2.5 rounded-full bg-emerald-500 border-2 border-[#1e293b]"></span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-center mb-0.5">
+<p class="text-sm font-medium text-white truncate group-hover:text-primary transition-colors">Alex M.</p>
+<span class="text-[10px] text-slate-500 font-mono">#402</span>
+</div>
+<p class="text-xs text-slate-400 truncate">I-95 South • 5 mins away</p>
+</div>
+</div>
+</div>
+<!-- Driver Item 2 -->
+<div class="p-3 rounded-xl hover:bg-white/5 cursor-pointer transition-colors group border border-transparent hover:border-white/5">
+<div class="flex items-center gap-3">
+<div class="relative">
+<div class="size-10 rounded-full bg-cover bg-center" data-alt="Driver Sarah J" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCXPQkKC1P4esow-dmBm9o6uBYfX1ZKwwOiNA6Q5HZbfXDohw9qrf_0bN_Bfx9FPZK_TR5kmxwV8LBxTQsVroEjJKI3WA2NZ9jWyVzO7-LpbrOZMF2V_NPXMOiuNb0lpN8uYw-e8KFOemfE4y7nIdRLCOxNn3HeMCfk-X1rg_my9QL83IPm1Bf8vo2eXVgT0dBdtoKkAhsNnXjkE8Yiaj4fLElxpNOlLHZbgdPFvSAHtkbxLzl8Jir9N5jYWqAQWSbOilmW-OJAxXc');"></div>
+<span class="absolute bottom-0 right-0 size-2.5 rounded-full bg-amber-500 border-2 border-[#1e293b]"></span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-center mb-0.5">
+<p class="text-sm font-medium text-white truncate group-hover:text-primary transition-colors">Sarah J.</p>
+<span class="text-[10px] text-slate-500 font-mono">#881</span>
+</div>
+<p class="text-xs text-slate-400 truncate">Loading Dock B • Idle</p>
+</div>
+</div>
+</div>
+<!-- Driver Item 3 -->
+<div class="p-3 rounded-xl hover:bg-white/5 cursor-pointer transition-colors group border border-transparent hover:border-white/5">
+<div class="flex items-center gap-3">
+<div class="relative">
+<div class="size-10 rounded-full bg-cover bg-center" data-alt="Driver Mike T" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCJRVu7-_Y3Y8YRocVfyzW0UChTysaKcKPDvS-mfN_YIg472SSCqFW6kiDvX7Zs-ah3nXYO1D0IDNWruKo_fsW4Tu5kGC8vyYLMzDVTQ4GYQRlNGEvNHrIQWqNGVj32lGp7AlG0HvAtQXeeOCkAfUNGQEbtZvjO3mY3ZY0UvHkPZP-jFi4xoEOovvUls30DZHkoBW3VcMpS4yoW3-d1Zq-Unh3i3ES92Z0_LndD3pEQDYcSdxOApqKGRCWM0pJ4FLKetcZcIO8IWjc');"></div>
+<span class="absolute bottom-0 right-0 size-2.5 rounded-full bg-slate-500 border-2 border-[#1e293b]"></span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-center mb-0.5">
+<p class="text-sm font-medium text-white truncate group-hover:text-primary transition-colors">Mike T.</p>
+<span class="text-[10px] text-slate-500 font-mono">#104</span>
+</div>
+<p class="text-xs text-slate-400 truncate">Offline • Since 2h ago</p>
+</div>
+</div>
+</div>
+<!-- Driver Item 4 -->
+<div class="p-3 rounded-xl hover:bg-white/5 cursor-pointer transition-colors group border border-transparent hover:border-white/5">
+<div class="flex items-center gap-3">
+<div class="relative">
+<div class="size-10 rounded-full bg-cover bg-center" data-alt="Driver David L" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBSyb6H5axjGIpxp-fFgOy7OM6KA5HI_tKCGFvC2k8DsKokFj08quejohw0E6EdBgQL9gBBQqjpZjHb8dhnmFh_LwYwlX10k4cBCC4JMosjXv_Oub6epcAYI2dnQdFz3IH-J5aWTC9gqBh2lqbpYktX3X0rOl4zMaryUxQnzPvJlXzSbRxTXSKg1yDQZn8pER-MBTzLfCaJbt1bryLixm7yaRtRaYiND4YKUcsjR3IIb_W0PQDAi2VTie__9SpNwBgWEtOnRowYjbI');"></div>
+<span class="absolute bottom-0 right-0 size-2.5 rounded-full bg-emerald-500 border-2 border-[#1e293b]"></span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-center mb-0.5">
+<p class="text-sm font-medium text-white truncate group-hover:text-primary transition-colors">David L.</p>
+<span class="text-[10px] text-slate-500 font-mono">#305</span>
+</div>
+<p class="text-xs text-slate-400 truncate">Route 66 • 45 mph</p>
+</div>
+</div>
+</div>
+<!-- Driver Item 5 -->
+<div class="p-3 rounded-xl hover:bg-white/5 cursor-pointer transition-colors group border border-transparent hover:border-white/5">
+<div class="flex items-center gap-3">
+<div class="relative">
+<div class="size-10 rounded-full bg-cover bg-center" data-alt="Driver Jenny W" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDQWzIbtcIVqheY-4ZFDEDyf0ErinLHL_RQPHJ1FfiLIp8yLyKG-osNkoigFpyqtt4QphIn5BXBy41ktP36m7m8qiSiigcCQfgvW9uuCLx9ito2f24GyZYzDXenc7DH7Z9Wkm861SJOt6xHRT8wAwaTE1wEunOBKetIEZ30HX9q7eTzJIZeCS8pKnbZtcqYum3PL93Jy9Kh1l6hhJjosRqbuevirVIUBu_8sO48gH3h2c-CZGSFtfVqhnZ3hR2oFevAH2F9BUqdl3s');"></div>
+<span class="absolute bottom-0 right-0 size-2.5 rounded-full bg-emerald-500 border-2 border-[#1e293b]"></span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-center mb-0.5">
+<p class="text-sm font-medium text-white truncate group-hover:text-primary transition-colors">Jenny W.</p>
+<span class="text-[10px] text-slate-500 font-mono">#212</span>
+</div>
+<p class="text-xs text-slate-400 truncate">Downtown • 12 mph</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Panel Footer -->
+<div class="p-4 border-t border-white/5">
+<button class="w-full py-2.5 rounded-lg bg-primary hover:bg-primary-hover text-white text-sm font-medium transition-colors shadow-lg shadow-primary/20">
+                                Broadcast Message
+                            </button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

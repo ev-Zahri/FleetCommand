@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FleetCommand - Driver Management</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Theme Config -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2060df",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#121721",
+                        "surface-dark": "#1b2232",
+                        "surface-border": "#253046",
+                        "text-secondary": "#95a5c6"
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        /* Custom scrollbar for dark theme */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #121721; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #253046; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #364563; 
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white antialiased overflow-x-hidden min-h-screen flex flex-col">
+<!-- Top Navigation -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-surface-border bg-background-dark px-4 lg:px-10 py-3 sticky top-0 z-50">
+<div class="flex items-center gap-4 lg:gap-8">
+<div class="flex items-center gap-3 text-white">
+<div class="size-8 flex items-center justify-center bg-primary rounded-lg">
+<span class="material-symbols-outlined text-white">local_shipping</span>
+</div>
+<h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em] hidden md:block">FleetCommand</h2>
+</div>
+<!-- Search -->
+<label class="hidden md:flex flex-col min-w-40 !h-10 max-w-64">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full">
+<div class="text-text-secondary flex border-none bg-surface-border items-center justify-center pl-4 rounded-l-lg border-r-0">
+<span class="material-symbols-outlined text-[20px]">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-white focus:outline-0 focus:ring-0 border-none bg-surface-border focus:border-none h-full placeholder:text-text-secondary px-4 rounded-l-none border-l-0 pl-2 text-sm font-normal leading-normal" placeholder="Search" value=""/>
+</div>
+</label>
+</div>
+<div class="flex items-center justify-end gap-4 lg:gap-8">
+<!-- Nav Links (Desktop) -->
+<nav class="hidden lg:flex items-center gap-6">
+<a class="text-text-secondary hover:text-white text-sm font-medium leading-normal transition-colors" href="#">Dashboard</a>
+<a class="text-white text-sm font-medium leading-normal" href="#">Drivers</a>
+<a class="text-text-secondary hover:text-white text-sm font-medium leading-normal transition-colors" href="#">Vehicles</a>
+<a class="text-text-secondary hover:text-white text-sm font-medium leading-normal transition-colors" href="#">Reports</a>
+</nav>
+<div class="flex items-center gap-3">
+<button class="flex items-center justify-center rounded-lg size-10 bg-surface-border text-white hover:bg-[#364563] transition-colors">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+</button>
+<button class="flex items-center justify-center rounded-lg size-10 bg-surface-border text-white hover:bg-[#364563] transition-colors">
+<span class="material-symbols-outlined text-[20px]">chat_bubble</span>
+</button>
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-10 border border-surface-border cursor-pointer" data-alt="User profile avatar of a smiling man" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCZ99v9StqLdXNff0uCp_EaXD7EM7qBUWbZmE7MFpBqh6fxUJh3Vb9IGnQ3SMHDBabu1iUZhhpSO-AQy0OYtcv6QN_S4-puZVmhf6N7WaoFKynNm6znWvrsjLJU2EkgvrTL-H9Z_THeH5S6dllbeJdplKLcjxVki-O6SYpate3ByfiuPz5tN1dFcIKTqFz3oPQt-_icdUEJcapYQiydSb1KnTVvftKGh2y8QDs8F1n0eu2VjRi9AXdLmw_kFh0CkMntYVReXPapNlk");'>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content Container -->
+<main class="flex-1 flex flex-col w-full max-w-[1440px] mx-auto px-4 lg:px-10 py-6 lg:py-8">
+<!-- Breadcrumbs -->
+<div class="flex items-center gap-2 mb-6">
+<a class="text-text-secondary hover:text-white text-sm font-medium leading-normal flex items-center gap-1" href="#">
+<span class="material-symbols-outlined text-[18px]">dashboard</span>
+                Dashboard
+            </a>
+<span class="text-text-secondary text-sm font-medium leading-normal">/</span>
+<span class="text-white text-sm font-medium leading-normal">Drivers</span>
+</div>
+<!-- Page Heading & Actions -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
+<div class="flex flex-col gap-2">
+<h1 class="text-white text-3xl md:text-4xl font-black leading-tight tracking-[-0.033em]">Fleet Drivers</h1>
+<p class="text-text-secondary text-base font-normal leading-normal max-w-2xl">
+                    Manage your fleet drivers, view their real-time status, and track assignment history.
+                </p>
+</div>
+<button class="flex items-center justify-center gap-2 rounded-lg h-10 px-6 bg-primary hover:bg-blue-600 text-white text-sm font-bold leading-normal tracking-[0.015em] transition-colors shadow-lg shadow-blue-900/20 whitespace-nowrap">
+<span class="material-symbols-outlined text-[20px]">add</span>
+<span>Add Driver</span>
+</button>
+</div>
+<!-- Filter & Search Bar -->
+<div class="flex flex-col md:flex-row gap-4 mb-8 bg-surface-dark p-4 rounded-xl border border-surface-border">
+<div class="flex-1 relative">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-text-secondary">search</span>
+<input class="w-full bg-background-dark border border-surface-border rounded-lg h-12 pl-12 pr-4 text-white placeholder:text-text-secondary focus:ring-1 focus:ring-primary focus:border-primary transition-all text-sm" placeholder="Search drivers by name, ID, or license number..."/>
+</div>
+<div class="w-full md:w-64 relative">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-text-secondary">filter_list</span>
+<select class="w-full bg-background-dark border border-surface-border rounded-lg h-12 pl-12 pr-10 text-white focus:ring-1 focus:ring-primary focus:border-primary transition-all text-sm appearance-none cursor-pointer">
+<option value="">All Statuses</option>
+<option value="online">Online</option>
+<option value="offline">Offline</option>
+<option value="on-leave">On Leave</option>
+<option value="maintenance">In Transit</option>
+</select>
+<span class="absolute right-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-text-secondary pointer-events-none">expand_more</span>
+</div>
+</div>
+<!-- Drivers Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Card 1: Online -->
+<div class="group flex flex-col bg-surface-dark border border-surface-border rounded-xl p-5 hover:border-primary/50 transition-all duration-300 shadow-md hover:shadow-xl hover:shadow-primary/5">
+<div class="flex justify-between items-start mb-4">
+<div class="flex items-center gap-3">
+<div class="size-12 rounded-full bg-cover bg-center border-2 border-surface-border" data-alt="Portrait of driver Alex Johnson" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDf87mwbvd9AQxTFUQJ_BxCm2VqYVAd7RXDaT0Qdms5Lf1wECTEuZWscw5Q1BmIjCIJSGtGOjnXTyxPosa5Hgo_NCAfuoECFRdV2CD9FNIdmnMmc91B6bFnmBB6hv4NgFapvTb9CD3YE3gsuvZcsQQDeKl_aq5SJkzREyDI2_YNVUcL9mOVKLueK9GRYOt-Okh9S60Ei9oikC2AH7-qcOX0mwAG8VNsh6YDggDElPSZOW-Em9p7FrKE2oTvzgjmvO5Bh3T5WB-kvvs");'></div>
+<div>
+<h3 class="text-white font-bold text-base">Alex Johnson</h3>
+<p class="text-text-secondary text-xs font-medium">ID: DRV-001</p>
+</div>
+</div>
+<span class="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-2.5 py-1 text-xs font-medium text-emerald-500 ring-1 ring-inset ring-emerald-500/20">
+<span class="size-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                        Online
+                    </span>
+</div>
+<div class="space-y-3 mb-6">
+<div class="flex items-center justify-between p-3 rounded-lg bg-background-dark border border-surface-border">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded bg-surface-border flex items-center justify-center text-text-secondary">
+<span class="material-symbols-outlined text-[18px]">directions_car</span>
+</div>
+<div>
+<p class="text-text-secondary text-xs">Vehicle</p>
+<p class="text-white text-sm font-semibold">Ford Transit</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-text-secondary text-xs">Plate</p>
+<p class="text-white text-sm font-mono">K42-L99</p>
+</div>
+</div>
+</div>
+<div class="mt-auto pt-4 border-t border-surface-border flex gap-3">
+<button class="flex-1 h-9 rounded-lg bg-white text-background-dark text-sm font-bold hover:bg-slate-200 transition-colors">
+                        Details
+                    </button>
+<button class="flex-1 h-9 rounded-lg bg-surface-border text-white text-sm font-medium hover:bg-[#364563] transition-colors border border-transparent hover:border-text-secondary/30">
+                        Message
+                    </button>
+</div>
+</div>
+<!-- Card 2: Offline -->
+<div class="group flex flex-col bg-surface-dark border border-surface-border rounded-xl p-5 hover:border-primary/50 transition-all duration-300 shadow-md hover:shadow-xl hover:shadow-primary/5">
+<div class="flex justify-between items-start mb-4">
+<div class="flex items-center gap-3">
+<div class="size-12 rounded-full bg-cover bg-center border-2 border-surface-border grayscale" data-alt="Portrait of driver Sarah Smith" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAPcVBi5RB8Oh4Sf0g1Ih-lLKOOV88f3Qi9ghzlnTtqG7nGb4X8Wp_R5unp-RXdDPNrhkLQe5u1XN3ij4fpd8WSFsKKYj1eMUcK6ls0Llxxdd-wkF2feCyVcWWcQV_CCrMEjrZ83ympFzzLaFeE7tooDxMXiirtD8zoW-3CkNZnXRx5lnokqYm-Gm2yrFdQHJK_sihpABA3uGAVulBn_q7Y78jhFURg0vrnCFU1Om5RwjEI1PeQJM8bzFpXXmBGQcRDHGAP6bY1pvA");'></div>
+<div>
+<h3 class="text-white font-bold text-base">Sarah Smith</h3>
+<p class="text-text-secondary text-xs font-medium">ID: DRV-024</p>
+</div>
+</div>
+<span class="inline-flex items-center gap-1.5 rounded-full bg-slate-500/10 px-2.5 py-1 text-xs font-medium text-slate-400 ring-1 ring-inset ring-slate-500/20">
+<span class="size-1.5 rounded-full bg-slate-500"></span>
+                        Offline
+                    </span>
+</div>
+<div class="space-y-3 mb-6">
+<div class="flex items-center justify-between p-3 rounded-lg bg-background-dark border border-surface-border opacity-60">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded bg-surface-border flex items-center justify-center text-text-secondary">
+<span class="material-symbols-outlined text-[18px]">local_shipping</span>
+</div>
+<div>
+<p class="text-text-secondary text-xs">Vehicle</p>
+<p class="text-white text-sm font-semibold">Volvo FH16</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-text-secondary text-xs">Plate</p>
+<p class="text-white text-sm font-mono">X92-M11</p>
+</div>
+</div>
+</div>
+<div class="mt-auto pt-4 border-t border-surface-border flex gap-3">
+<button class="flex-1 h-9 rounded-lg bg-white text-background-dark text-sm font-bold hover:bg-slate-200 transition-colors">
+                        Details
+                    </button>
+<button class="flex-1 h-9 rounded-lg bg-surface-border text-white text-sm font-medium hover:bg-[#364563] transition-colors border border-transparent hover:border-text-secondary/30">
+                        Message
+                    </button>
+</div>
+</div>
+<!-- Card 3: In Transit -->
+<div class="group flex flex-col bg-surface-dark border border-surface-border rounded-xl p-5 hover:border-primary/50 transition-all duration-300 shadow-md hover:shadow-xl hover:shadow-primary/5">
+<div class="flex justify-between items-start mb-4">
+<div class="flex items-center gap-3">
+<div class="size-12 rounded-full bg-cover bg-center border-2 border-surface-border" data-alt="Portrait of driver Michael Brown" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBK7MkOlXc72G2M5iTsmc_JSbR4lBr9eraNhTku_6uHRfv_sqZkyx25s4u66E5p2YGPpz6qX4IhFdsvBCNyLUU8_UGDjfV9GyVtazbZqXbITppH1yA8V67NMx5-33PcoJJ-mlifDbV9po87Btgl1HwdsuGq247Lu6F6l_tV6IzHttRIs6QT9F04IMkYlpGT4Je7M3Ht-hOI4iAq4LU14UhSZYZdOGmbtrsusVD4GaKPyRyE3zdLONhwY9xtfOtqRy-IHPc1OYqpCa0");'></div>
+<div>
+<h3 class="text-white font-bold text-base">Michael Brown</h3>
+<p class="text-text-secondary text-xs font-medium">ID: DRV-089</p>
+</div>
+</div>
+<span class="inline-flex items-center gap-1.5 rounded-full bg-blue-500/10 px-2.5 py-1 text-xs font-medium text-blue-400 ring-1 ring-inset ring-blue-500/20">
+<span class="size-1.5 rounded-full bg-blue-400"></span>
+                        In Transit
+                    </span>
+</div>
+<div class="space-y-3 mb-6">
+<div class="flex items-center justify-between p-3 rounded-lg bg-background-dark border border-surface-border">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded bg-surface-border flex items-center justify-center text-text-secondary">
+<span class="material-symbols-outlined text-[18px]">airport_shuttle</span>
+</div>
+<div>
+<p class="text-text-secondary text-xs">Vehicle</p>
+<p class="text-white text-sm font-semibold">Sprinter Van</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-text-secondary text-xs">Plate</p>
+<p class="text-white text-sm font-mono">B77-Q02</p>
+</div>
+</div>
+</div>
+<div class="mt-auto pt-4 border-t border-surface-border flex gap-3">
+<button class="flex-1 h-9 rounded-lg bg-white text-background-dark text-sm font-bold hover:bg-slate-200 transition-colors">
+                        Details
+                    </button>
+<button class="flex-1 h-9 rounded-lg bg-surface-border text-white text-sm font-medium hover:bg-[#364563] transition-colors border border-transparent hover:border-text-secondary/30">
+                        Message
+                    </button>
+</div>
+</div>
+<!-- Card 4: Online -->
+<div class="group flex flex-col bg-surface-dark border border-surface-border rounded-xl p-5 hover:border-primary/50 transition-all duration-300 shadow-md hover:shadow-xl hover:shadow-primary/5">
+<div class="flex justify-between items-start mb-4">
+<div class="flex items-center gap-3">
+<div class="size-12 rounded-full bg-cover bg-center border-2 border-surface-border" data-alt="Portrait of driver Emily Davis" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDxIchEl78KZJdRW6N5C9jklWoabWeW3BI9Cxdwcf1uG-s9wS0uL7EM9EJoYcc9jnrEgIqdV6JRXehbN2gmpHBbtAnAQvyl6I2SpNwBMoIYS9fVDfTzyWKHRHb0lE1zTInYts61IHtef2R0wRtKgd0vTX0I3W6avw_psjEiSDnNtaku2n6aIs1JDjQ3EOJwvECB3rJukmJ5Siw1MKS6HwW2uEl60S26aLexI2g5ORWnAjcHayV9NreOcAD9euO5ebIu7AsjfKvlkC8");'></div>
+<div>
+<h3 class="text-white font-bold text-base">Emily Davis</h3>
+<p class="text-text-secondary text-xs font-medium">ID: DRV-112</p>
+</div>
+</div>
+<span class="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-2.5 py-1 text-xs font-medium text-emerald-500 ring-1 ring-inset ring-emerald-500/20">
+<span class="size-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                        Online
+                    </span>
+</div>
+<div class="space-y-3 mb-6">
+<div class="flex items-center justify-between p-3 rounded-lg bg-background-dark border border-surface-border">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded bg-surface-border flex items-center justify-center text-text-secondary">
+<span class="material-symbols-outlined text-[18px]">local_taxi</span>
+</div>
+<div>
+<p class="text-text-secondary text-xs">Vehicle</p>
+<p class="text-white text-sm font-semibold">Sedan EV</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-text-secondary text-xs">Plate</p>
+<p class="text-white text-sm font-mono">E99-Z10</p>
+</div>
+</div>
+</div>
+<div class="mt-auto pt-4 border-t border-surface-border flex gap-3">
+<button class="flex-1 h-9 rounded-lg bg-white text-background-dark text-sm font-bold hover:bg-slate-200 transition-colors">
+                        Details
+                    </button>
+<button class="flex-1 h-9 rounded-lg bg-surface-border text-white text-sm font-medium hover:bg-[#364563] transition-colors border border-transparent hover:border-text-secondary/30">
+                        Message
+                    </button>
+</div>
+</div>
+<!-- Card 5: On Leave -->
+<div class="group flex flex-col bg-surface-dark border border-surface-border rounded-xl p-5 hover:border-primary/50 transition-all duration-300 shadow-md hover:shadow-xl hover:shadow-primary/5">
+<div class="flex justify-between items-start mb-4">
+<div class="flex items-center gap-3">
+<div class="size-12 rounded-full bg-cover bg-center border-2 border-surface-border grayscale" data-alt="Portrait of driver James Wilson" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDPPXXTRE2qRWmh_89Og4IdNYt48Tmznpsc9cJibXWV8Pxv01zpsJkDxBX1tav2GbSJyF4H6U8Ds0FuOYs7OlGgaAmGGseM_igtLLFldVlAIpCNucNMxiPcrGo4Aku9u2kTxq2fxNNaI8jzNYhyLAXq7K-sOnHt1fdPQGjh7lVHdSzsVPDLAsIx36uwY1CZ8yKOjm6P4UcfCFt6lbX1ybvLbU3vcmPLRcWF_JuQKt4eKMF68iQo7IiqV7d2CpLWv3xcizaaY2t_rnM");'></div>
+<div>
+<h3 class="text-white font-bold text-base">James Wilson</h3>
+<p class="text-text-secondary text-xs font-medium">ID: DRV-055</p>
+</div>
+</div>
+<span class="inline-flex items-center gap-1.5 rounded-full bg-amber-500/10 px-2.5 py-1 text-xs font-medium text-amber-500 ring-1 ring-inset ring-amber-500/20">
+<span class="size-1.5 rounded-full bg-amber-500"></span>
+                        On Leave
+                    </span>
+</div>
+<div class="space-y-3 mb-6">
+<div class="flex items-center justify-between p-3 rounded-lg bg-background-dark border border-surface-border opacity-60">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded bg-surface-border flex items-center justify-center text-text-secondary">
+<span class="material-symbols-outlined text-[18px]">no_crash</span>
+</div>
+<div>
+<p class="text-text-secondary text-xs">Vehicle</p>
+<p class="text-white text-sm font-semibold">Unassigned</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-text-secondary text-xs">Plate</p>
+<p class="text-white text-sm font-mono">---</p>
+</div>
+</div>
+</div>
+<div class="mt-auto pt-4 border-t border-surface-border flex gap-3">
+<button class="flex-1 h-9 rounded-lg bg-white text-background-dark text-sm font-bold hover:bg-slate-200 transition-colors">
+                        Details
+                    </button>
+<button class="flex-1 h-9 rounded-lg bg-surface-border text-white text-sm font-medium hover:bg-[#364563] transition-colors border border-transparent hover:border-text-secondary/30">
+                        Message
+                    </button>
+</div>
+</div>
+<!-- Card 6: Maintenance -->
+<div class="group flex flex-col bg-surface-dark border border-surface-border rounded-xl p-5 hover:border-primary/50 transition-all duration-300 shadow-md hover:shadow-xl hover:shadow-primary/5">
+<div class="flex justify-between items-start mb-4">
+<div class="flex items-center gap-3">
+<div class="size-12 rounded-full bg-cover bg-center border-2 border-surface-border" data-alt="Portrait of driver Linda Martinez" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuByT2umJhodFZJhg9e96jD8o-RRg5Yp8rtrhV-Of0R5wMLZrq_Mryt5c5Jdm1dxt7SosIX3JTgG256bUxQV7aJi11NtNeOb2djB5o-H6knStMUzDU1Ngb2XYLQDG3BX-rLZWHjuMdPaolK9evyT4LQCd5-N2trgZzk8xYjtvzIqaBWEZja3hqtSOvyio5hIeH6Unz2hMRudDQowfF4lHygSCTii0Le-YMEqfUkw5lZfKujCsQI0VjC3uBmbI6SKmQ869CQrLzt9Ddk");'></div>
+<div>
+<h3 class="text-white font-bold text-base">Linda Martinez</h3>
+<p class="text-text-secondary text-xs font-medium">ID: DRV-203</p>
+</div>
+</div>
+<span class="inline-flex items-center gap-1.5 rounded-full bg-rose-500/10 px-2.5 py-1 text-xs font-medium text-rose-500 ring-1 ring-inset ring-rose-500/20">
+<span class="size-1.5 rounded-full bg-rose-500"></span>
+                        Issue
+                    </span>
+</div>
+<div class="space-y-3 mb-6">
+<div class="flex items-center justify-between p-3 rounded-lg bg-background-dark border border-surface-border">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded bg-surface-border flex items-center justify-center text-text-secondary">
+<span class="material-symbols-outlined text-[18px]">build</span>
+</div>
+<div>
+<p class="text-text-secondary text-xs">Vehicle</p>
+<p class="text-white text-sm font-semibold">Mack Truck</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-text-secondary text-xs">Plate</p>
+<p class="text-white text-sm font-mono">M11-P55</p>
+</div>
+</div>
+</div>
+<div class="mt-auto pt-4 border-t border-surface-border flex gap-3">
+<button class="flex-1 h-9 rounded-lg bg-white text-background-dark text-sm font-bold hover:bg-slate-200 transition-colors">
+                        Details
+                    </button>
+<button class="flex-1 h-9 rounded-lg bg-surface-border text-white text-sm font-medium hover:bg-[#364563] transition-colors border border-transparent hover:border-text-secondary/30">
+                        Message
+                    </button>
+</div>
+</div>
+</div>
+<!-- Pagination -->
+<div class="flex items-center justify-between mt-8 border-t border-surface-border pt-6">
+<p class="text-sm text-text-secondary">Showing <span class="font-medium text-white">1</span> to <span class="font-medium text-white">6</span> of <span class="font-medium text-white">42</span> results</p>
+<div class="flex gap-2">
+<button class="flex items-center justify-center rounded-lg h-9 px-3 bg-surface-border text-text-secondary hover:text-white hover:bg-[#364563] transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+<span class="material-symbols-outlined text-[18px]">chevron_left</span>
+</button>
+<button class="flex items-center justify-center rounded-lg h-9 w-9 bg-primary text-white font-bold text-sm">1</button>
+<button class="flex items-center justify-center rounded-lg h-9 w-9 bg-surface-border text-text-secondary hover:text-white hover:bg-[#364563] transition-colors text-sm">2</button>
+<button class="flex items-center justify-center rounded-lg h-9 w-9 bg-surface-border text-text-secondary hover:text-white hover:bg-[#364563] transition-colors text-sm">3</button>
+<span class="flex items-center justify-center h-9 w-9 text-text-secondary">...</span>
+<button class="flex items-center justify-center rounded-lg h-9 px-3 bg-surface-border text-text-secondary hover:text-white hover:bg-[#364563] transition-colors">
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+</div>
+</div>
+</main>
+</body></html>

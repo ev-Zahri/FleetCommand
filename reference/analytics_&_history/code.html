@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FleetCommand - Analytics &amp; History</title>
+<!-- Fonts and Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2060df",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#121721",
+                        "surface-dark": "#253046",
+                        "text-secondary": "#95a5c6",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "body": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for webkit */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #121721; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #253046; 
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #2060df; 
+        }
+        
+        /* Range slider styling */
+        input[type=range] {
+            -webkit-appearance: none; 
+            background: transparent; 
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 16px;
+            width: 16px;
+            border-radius: 50%;
+            background: #ffffff;
+            cursor: pointer;
+            margin-top: -6px; 
+            box-shadow: 0 0 0 2px #2060df;
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 4px;
+            cursor: pointer;
+            background: #4b5563;
+            border-radius: 2px;
+        }
+        input[type=range]:focus::-webkit-slider-runnable-track {
+            background: #2060df;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display overflow-hidden antialiased h-screen flex">
+<!-- Sidebar Navigation -->
+<aside class="hidden lg:flex flex-col w-64 border-r border-[#253046] bg-[#121721] flex-shrink-0 h-full">
+<div class="flex flex-col h-full p-4 justify-between">
+<div class="flex flex-col gap-6">
+<!-- Logo -->
+<div class="flex items-center gap-3 px-2">
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-10 bg-primary flex items-center justify-center text-white font-bold" data-alt="FleetCommand Logo">
+                        FC
+                    </div>
+<h1 class="text-white text-lg font-bold tracking-tight">FleetCommand</h1>
+</div>
+<!-- Navigation Links -->
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-text-secondary hover:bg-[#253046] hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-[24px]">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-[#253046] text-white" href="#">
+<span class="material-symbols-outlined text-[24px] font-variation-settings-'FILL' 1">pie_chart</span>
+<span class="text-sm font-medium">Analytics</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-text-secondary hover:bg-[#253046] hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-[24px]">local_shipping</span>
+<span class="text-sm font-medium">Fleet</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-text-secondary hover:bg-[#253046] hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-[24px]">group</span>
+<span class="text-sm font-medium">Drivers</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-text-secondary hover:bg-[#253046] hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-[24px]">settings</span>
+<span class="text-sm font-medium">Settings</span>
+</a>
+</nav>
+</div>
+<!-- User Profile -->
+<div class="flex items-center gap-3 px-3 py-3 border-t border-[#253046] mt-auto">
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-9 bg-slate-700" data-alt="User profile picture of a man" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBoNe-eiwc9YXb7h_vTLpf365t3P5t8Hzwu_XTq3gGXQeqpIAXeIYUo3fehsG02Gl-d62-KGqAzOT5oRxXv6pQEsj6G2BtJyViI90aQhyDwhhCzoVEMrEKly-ZIH4M8ld1KVRm1o9OEwXtIVyvyltbn6_4UPJL4RBjPNZS4svhmjIBYJRma1bQisN105L4B14k-Ff8wp0i_qvInbwY0IWQ-SgbXb0ccMVPxjTQgUTn5sbWUwfVyMToOMFrZQi9O-zVft3fWSaFNvxU");'></div>
+<div class="flex flex-col">
+<p class="text-white text-sm font-medium">Alex Morgan</p>
+<p class="text-text-secondary text-xs">Fleet Manager</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Wrapper -->
+<div class="flex-1 flex flex-col h-full relative overflow-hidden">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between border-b border-[#253046] bg-[#121721] px-6 py-4 flex-shrink-0 z-20">
+<div class="flex items-center gap-4">
+<button class="lg:hidden text-white">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<!-- Breadcrumbs -->
+<div class="hidden sm:flex items-center gap-2">
+<a class="text-text-secondary text-sm font-medium hover:text-white transition-colors" href="#">Dashboard</a>
+<span class="text-text-secondary text-sm">/</span>
+<span class="text-white text-sm font-medium">Analytics &amp; History</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<!-- Search Bar -->
+<div class="hidden md:flex items-center bg-[#253046] rounded-lg px-3 h-10 w-64 border border-transparent focus-within:border-primary transition-all">
+<span class="material-symbols-outlined text-text-secondary text-[20px]">search</span>
+<input class="bg-transparent border-none text-white text-sm w-full focus:ring-0 placeholder:text-text-secondary" placeholder="Search fleet, drivers..." type="text"/>
+</div>
+<!-- Action Buttons -->
+<button class="size-10 flex items-center justify-center rounded-lg bg-[#253046] text-white hover:bg-[#2d3a54] transition-colors relative">
+<span class="absolute top-2.5 right-2.5 size-2 bg-red-500 rounded-full border-2 border-[#253046]"></span>
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+</button>
+<button class="size-10 flex items-center justify-center rounded-lg bg-[#253046] text-white hover:bg-[#2d3a54] transition-colors">
+<span class="material-symbols-outlined text-[20px]">help</span>
+</button>
+</div>
+</header>
+<!-- Main Scrollable Content -->
+<main class="flex-1 overflow-y-auto bg-[#121721] p-4 md:p-8 scroll-smooth">
+<div class="max-w-7xl mx-auto space-y-6">
+<!-- Page Heading -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div>
+<h2 class="text-3xl font-bold text-white tracking-tight">Analytics Overview</h2>
+<p class="text-text-secondary mt-1">Monitor performance metrics and replay historical routes.</p>
+</div>
+<div class="flex items-center gap-3">
+<div class="flex items-center bg-[#253046] rounded-lg px-3 py-2 border border-[#364259]">
+<span class="material-symbols-outlined text-text-secondary text-[20px] mr-2">calendar_today</span>
+<span class="text-white text-sm font-medium">Oct 14 - Oct 21</span>
+<span class="material-symbols-outlined text-text-secondary text-[20px] ml-2">expand_more</span>
+</div>
+<button class="flex items-center gap-2 bg-primary hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-medium transition-colors text-sm h-full">
+<span class="material-symbols-outlined text-[20px]">download</span>
+                            Export Report
+                        </button>
+</div>
+</div>
+<!-- Bento Grid: Top Row Charts -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6">
+<!-- Card 1: Orders per Day -->
+<div class="lg:col-span-5 bg-[#253046] rounded-xl p-5 border border-[#364259] flex flex-col h-[320px]">
+<div class="flex items-center justify-between mb-6">
+<div>
+<h3 class="text-white font-semibold text-lg">Orders Per Day</h3>
+<p class="text-text-secondary text-sm">Total 1,248 orders this week</p>
+</div>
+<span class="flex items-center text-emerald-400 text-sm font-medium bg-emerald-400/10 px-2 py-1 rounded">
+<span class="material-symbols-outlined text-[16px] mr-1">trending_up</span>
+                                +12.5%
+                            </span>
+</div>
+<!-- CSS Bar Chart Representation -->
+<div class="flex-1 flex items-end justify-between gap-2 md:gap-4 px-2">
+<!-- Mon -->
+<div class="flex flex-col items-center gap-2 flex-1 group">
+<div class="w-full bg-primary/30 rounded-t-sm h-[40%] relative group-hover:bg-primary transition-all duration-300"></div>
+<span class="text-text-secondary text-xs">Mon</span>
+</div>
+<!-- Tue -->
+<div class="flex flex-col items-center gap-2 flex-1 group">
+<div class="w-full bg-primary/30 rounded-t-sm h-[65%] relative group-hover:bg-primary transition-all duration-300"></div>
+<span class="text-text-secondary text-xs">Tue</span>
+</div>
+<!-- Wed -->
+<div class="flex flex-col items-center gap-2 flex-1 group">
+<div class="w-full bg-primary/30 rounded-t-sm h-[50%] relative group-hover:bg-primary transition-all duration-300"></div>
+<span class="text-text-secondary text-xs">Wed</span>
+</div>
+<!-- Thu -->
+<div class="flex flex-col items-center gap-2 flex-1 group">
+<div class="w-full bg-primary/30 rounded-t-sm h-[85%] relative group-hover:bg-primary transition-all duration-300"></div>
+<span class="text-text-secondary text-xs">Thu</span>
+</div>
+<!-- Fri -->
+<div class="flex flex-col items-center gap-2 flex-1 group">
+<div class="w-full bg-primary rounded-t-sm h-[95%] relative shadow-[0_0_15px_rgba(32,96,223,0.4)]"></div>
+<span class="text-white text-xs font-bold">Fri</span>
+</div>
+<!-- Sat -->
+<div class="flex flex-col items-center gap-2 flex-1 group">
+<div class="w-full bg-primary/30 rounded-t-sm h-[30%] relative group-hover:bg-primary transition-all duration-300"></div>
+<span class="text-text-secondary text-xs">Sat</span>
+</div>
+<!-- Sun -->
+<div class="flex flex-col items-center gap-2 flex-1 group">
+<div class="w-full bg-primary/30 rounded-t-sm h-[20%] relative group-hover:bg-primary transition-all duration-300"></div>
+<span class="text-text-secondary text-xs">Sun</span>
+</div>
+</div>
+</div>
+<!-- Card 2: Avg Delivery Time -->
+<div class="lg:col-span-5 bg-[#253046] rounded-xl p-5 border border-[#364259] flex flex-col h-[320px]">
+<div class="flex items-center justify-between mb-2">
+<div>
+<h3 class="text-white font-semibold text-lg">Avg. Delivery Time</h3>
+<p class="text-text-secondary text-sm">Target: 45 min</p>
+</div>
+<div class="text-right">
+<p class="text-2xl font-bold text-white">42m 15s</p>
+<p class="text-emerald-400 text-xs font-medium">-2m vs last week</p>
+</div>
+</div>
+<!-- CSS/SVG Line Chart Representation -->
+<div class="flex-1 w-full h-full flex items-center justify-center relative pt-4">
+<svg class="w-full h-full overflow-visible" preserveaspectratio="none" viewbox="0 0 100 50">
+<!-- Grid Lines -->
+<line stroke="#364259" stroke-dasharray="2" stroke-width="0.5" x1="0" x2="100" y1="0" y2="0"></line>
+<line stroke="#364259" stroke-dasharray="2" stroke-width="0.5" x1="0" x2="100" y1="25" y2="25"></line>
+<line stroke="#364259" stroke-dasharray="2" stroke-width="0.5" x1="0" x2="100" y1="50" y2="50"></line>
+<!-- Chart Area Gradient -->
+<defs>
+<lineargradient id="gradient" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" style="stop-color:#2060df;stop-opacity:0.3"></stop>
+<stop offset="100%" style="stop-color:#2060df;stop-opacity:0"></stop>
+</lineargradient>
+</defs>
+<path d="M0,35 Q10,32 20,25 T40,28 T60,15 T80,18 T100,5 L100,50 L0,50 Z" fill="url(#gradient)"></path>
+<!-- Line -->
+<path d="M0,35 Q10,32 20,25 T40,28 T60,15 T80,18 T100,5" fill="none" stroke="#2060df" stroke-linecap="round" stroke-width="1.5"></path>
+<!-- Active Point -->
+<circle cx="80" cy="18" fill="#121721" r="2" stroke="#fff" stroke-width="1"></circle>
+</svg>
+</div>
+<div class="flex justify-between text-xs text-text-secondary mt-2">
+<span>08:00</span>
+<span>10:00</span>
+<span>12:00</span>
+<span>14:00</span>
+<span>16:00</span>
+<span>18:00</span>
+</div>
+</div>
+<!-- Card 3: Key Stats Column -->
+<div class="lg:col-span-2 flex flex-col gap-6">
+<!-- Stat 1 -->
+<div class="bg-[#253046] rounded-xl p-5 border border-[#364259] flex-1 flex flex-col justify-center gap-2">
+<div class="flex items-center gap-2 text-text-secondary mb-1">
+<span class="material-symbols-outlined text-[20px]">local_gas_station</span>
+<span class="text-xs font-medium uppercase tracking-wider">Fuel Eff.</span>
+</div>
+<div class="flex items-end gap-2">
+<span class="text-3xl font-bold text-white">8.4</span>
+<span class="text-sm text-text-secondary mb-1">mpg</span>
+</div>
+<div class="w-full bg-[#121721] rounded-full h-1.5 mt-2">
+<div class="bg-blue-400 h-1.5 rounded-full" style="width: 75%"></div>
+</div>
+</div>
+<!-- Stat 2 -->
+<div class="bg-[#253046] rounded-xl p-5 border border-[#364259] flex-1 flex flex-col justify-center gap-2">
+<div class="flex items-center gap-2 text-text-secondary mb-1">
+<span class="material-symbols-outlined text-[20px]">person_pin_circle</span>
+<span class="text-xs font-medium uppercase tracking-wider">Active</span>
+</div>
+<div class="flex items-end gap-2">
+<span class="text-3xl font-bold text-white">24</span>
+<span class="text-sm text-text-secondary mb-1">/ 30</span>
+</div>
+<div class="flex -space-x-2 mt-2">
+<div class="size-6 rounded-full bg-slate-500 border border-[#253046]" data-alt="Avatar 1" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDtknxEw4sqpCwUdeQO8bLjF-S9HVK20lyKWtslDjVTHlMEpND9WUgOo9hJC2bftnuplrARXxLxYk9ARnOr-2MVUUed1cbDsZNp4VslG96yfulydNdmxk2iOaLfYDw9BalgMx4oNPmJPOa9eQqv6xSjxYfZ-o3DP-MOLC-LbwSur6HnNq_WuaeFBzRcBwkcqmuKG6jyYb7ACtK3fw9bOETP06m0B_iuY-l53DWSbULSFSSh4g_qHbs2l6-vpfsEjHwOAxITs5iNWdE");'></div>
+<div class="size-6 rounded-full bg-slate-400 border border-[#253046]" data-alt="Avatar 2" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBLEtqxvEtj5rd8Z5nPXkYi_DzS1FGBvGxTCNlKbZ5OWsmu44FDkQxP8VfV6JfR4zW2JjIf4h878azPP11MXu24b6be4uubHiBEMyiEPvaRMHYkOf0AW6M-NGbeJJDAmUF3efs_RWOh0KnpEtEhKueuzbfCpkSp-DTXahWQAgQxF_2DEdzflpjR6feKN-fAuvm7P5jjNk9UUHHYGTkHghSTSwsZ9MAcVE6weltsrIYt4jrCOWydu3X1Kko8kbqkEBi8SorswGYyc40");'></div>
+<div class="size-6 rounded-full bg-slate-300 border border-[#253046]" data-alt="Avatar 3" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDCvgBbHeDb4ucw1lN1ZaBqjFwu_WBJKY0Cwi9WOB0rHLTW6Lm0keUgmYOhzbLVoLRd3SG-InxtnwfWW0OqjFsHZKahhU9AmW_j68j4doRJpT3lOFXyHIWRD9paVyfD_1_v6My5v78QDqvZWD-U0fnE3ly8ayjEU0L1G6631VkPpI-AgtP-gOQTk2SgQv95Cn3nbePisafxyMf285I9o-Ifst6KqfPeX6xmMuYnvwrLNdLuXwa20Xg83AGPztLaXewIGPVi1XPcM2I");'></div>
+<div class="size-6 rounded-full bg-[#121721] text-[10px] text-white flex items-center justify-center border border-[#253046]">+21</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bento Grid: Bottom Row (Route Replay) -->
+<div class="bg-[#253046] rounded-xl border border-[#364259] overflow-hidden flex flex-col shadow-lg">
+<!-- Controls Header -->
+<div class="p-4 border-b border-[#364259] bg-[#253046] flex flex-wrap items-center justify-between gap-4">
+<div class="flex items-center gap-2">
+<div class="p-2 bg-primary/20 rounded-lg text-primary">
+<span class="material-symbols-outlined">history_toggle_off</span>
+</div>
+<h3 class="text-white font-bold text-lg">Route Replay</h3>
+</div>
+<div class="flex flex-wrap items-center gap-3">
+<!-- Driver Selector -->
+<div class="relative group min-w-[200px]">
+<select class="w-full bg-[#121721] text-white border border-[#364259] text-sm rounded-lg focus:ring-primary focus:border-primary block p-2.5 appearance-none cursor-pointer">
+<option>John Doe - Truck #402</option>
+<option>Sarah Smith - Truck #105</option>
+<option>Mike Ross - Van #88</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-2.5 text-text-secondary pointer-events-none">expand_more</span>
+</div>
+<!-- Date Picker -->
+<div class="relative min-w-[160px]">
+<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+<span class="material-symbols-outlined text-text-secondary text-[18px]">calendar_month</span>
+</div>
+<input class="bg-[#121721] border border-[#364259] text-white text-sm rounded-lg focus:ring-primary focus:border-primary block w-full pl-10 p-2.5" placeholder="Select date" type="text" value="Oct 20, 2023"/>
+</div>
+</div>
+</div>
+<!-- Map Container -->
+<div class="relative h-[500px] w-full bg-[#0f1218]">
+<!-- Map Image Placeholder -->
+<div class="absolute inset-0 w-full h-full bg-cover bg-center opacity-60" data-alt="Dark map of city streets at night" data-location="City Map" style='background-image: url("https://placeholder.pics/svg/300");'></div>
+<!-- Route Overlay SVG -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none" style="filter: drop-shadow(0px 0px 4px rgba(32, 96, 223, 0.5));">
+<path d="M 200,400 Q 300,350 450,380 T 600,250 T 800,200 T 950,100" fill="none" stroke="#2060df" stroke-dasharray="10 5" stroke-linecap="round" stroke-width="4"></path>
+<!-- Start Point -->
+<circle cx="200" cy="400" fill="#10b981" r="6" stroke="#fff" stroke-width="2"></circle>
+<!-- End Point -->
+<circle cx="950" cy="100" fill="#ef4444" r="6" stroke="#fff" stroke-width="2"></circle>
+<!-- Current Location Truck Icon -->
+<g transform="translate(585, 235)">
+<circle cx="15" cy="15" fill="#2060df" fill-opacity="0.3" r="20"></circle>
+<circle cx="15" cy="15" fill="#2060df" r="14" stroke="#fff" stroke-width="2"></circle>
+<foreignobject height="20" width="20" x="5" y="5">
+<span class="material-symbols-outlined text-white text-[20px]">local_shipping</span>
+</foreignobject>
+</g>
+</svg>
+<!-- Map Info Overlay -->
+<div class="absolute top-4 left-4 bg-[#121721]/90 backdrop-blur-sm border border-[#364259] p-3 rounded-lg shadow-lg">
+<div class="flex items-center gap-3 mb-2">
+<div class="bg-green-500/20 text-green-400 p-1.5 rounded-md">
+<span class="material-symbols-outlined text-[18px]">check_circle</span>
+</div>
+<div>
+<p class="text-xs text-text-secondary uppercase">Status</p>
+<p class="text-white text-sm font-bold">In Transit</p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="bg-blue-500/20 text-blue-400 p-1.5 rounded-md">
+<span class="material-symbols-outlined text-[18px]">speed</span>
+</div>
+<div>
+<p class="text-xs text-text-secondary uppercase">Speed</p>
+<p class="text-white text-sm font-bold">54 mph</p>
+</div>
+</div>
+</div>
+<!-- Timeline Player Controls (Bottom Overlay) -->
+<div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[#121721] to-transparent pt-12 pb-4 px-4 md:px-8">
+<div class="bg-[#121721] border border-[#364259] rounded-xl p-4 shadow-xl backdrop-blur-md bg-opacity-95">
+<div class="flex flex-col gap-3">
+<!-- Time Labels & Slider -->
+<div class="flex justify-between text-xs font-medium text-text-secondary mb-1">
+<span>08:00 AM</span>
+<span class="text-primary">12:30 PM</span>
+<span>06:00 PM</span>
+</div>
+<div class="relative w-full h-4 flex items-center">
+<input class="w-full h-1 bg-slate-700 rounded-lg appearance-none cursor-pointer z-10 focus:outline-none" max="100" min="0" type="range" value="45"/>
+<!-- Buffered Bar Simulation -->
+<div class="absolute left-0 h-1 bg-primary rounded-l-lg pointer-events-none" style="width: 45%"></div>
+</div>
+<!-- Playback Buttons -->
+<div class="flex items-center justify-between mt-1">
+<div class="flex items-center gap-2">
+<button class="text-text-secondary hover:text-white p-1">
+<span class="material-symbols-outlined">skip_previous</span>
+</button>
+<button class="bg-white text-primary rounded-full size-10 flex items-center justify-center hover:bg-gray-100 transition-colors shadow-lg">
+<span class="material-symbols-outlined font-bold text-[24px]">play_arrow</span>
+</button>
+<button class="text-text-secondary hover:text-white p-1">
+<span class="material-symbols-outlined">skip_next</span>
+</button>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden sm:flex flex-col items-end">
+<span class="text-white text-sm font-mono">12:30:45</span>
+<span class="text-xs text-text-secondary">Oct 20</span>
+</div>
+<div class="flex bg-[#253046] rounded-lg p-1 border border-[#364259]">
+<button class="px-2 py-1 text-xs font-medium text-text-secondary hover:text-white hover:bg-[#364259] rounded transition-colors">1x</button>
+<button class="px-2 py-1 text-xs font-bold text-white bg-primary rounded shadow-sm">2x</button>
+<button class="px-2 py-1 text-xs font-medium text-text-secondary hover:text-white hover:bg-[#364259] rounded transition-colors">4x</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>
